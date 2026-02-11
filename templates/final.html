@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Наша история - Только начало</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="final-screen">
+    <div class="container">
+        <!-- Контейнер для анимаций -->
+        <div id="fireworks-container"></div>
+
+        <div class="final-content">
+            <div class="heart-animation">💖</div>
+            <h1>Поздравляю! Ты нашёл все ключи!</h1>
+
+            <p class="final-message">И все эти моменты только начало :)</p>
+
+            <!-- Слайд-шоу -->
+   <div class="slideshow-container">
+    <div class="slide active">
+        <div class="image-box slide-box">
+            <img src="{{ url_for('static', filename='image/final1.jpg') }}" alt="Наше фото 1" class="fill-max-size">
+        </div>
+        <div class="slide-caption">❤</div>
+    </div>
+    <div class="slide">
+        <div class="image-box slide-box">
+            <img src="{{ url_for('static', filename='image/final2.jpg') }}" alt="Наше фото 2" class="fill-max-size">
+        </div>
+        <div class="slide-caption">❤</div>
+    </div>
+    <div class="slide">
+        <div class="image-box slide-box">
+            <img src="{{ url_for('static', filename='image/final3.jpg') }}" alt="Наше фото 3" class="fill-max-size">
+        </div>
+        <div class="slide-caption">❤</div>
+    </div>
+    <div class="slide">
+        <div class="image-box slide-box">
+            <img src="{{ url_for('static', filename='image/final4.jpg') }}" alt="Наше фото 4" class="fill-max-size">
+        </div>
+        <div class="slide-caption">❤</div>
+    </div>
+    <button class="prev" onclick="prevSlide()">❮</button>
+    <button class="next" onclick="nextSlide()">❯</button>
+</div>
+        </div>
+
+            <!-- Секретная кнопка -->
+            <div class="secret-section">
+                <h2>Хочешь оставить сообщение мне?</h2>
+                <p>Напиши что-нибудь, что я прочитаю позже...</p>
+                <a href="{{ url_for('message') }}" class="btn secret-btn">Оставить секретное сообщение</a>
+            </div>
+
+            <div class="final-note">
+                <h3>С Днём Святого Валентина, зайка</h3>
+                <p>аааааааа</p>
+
+                <div class="signature">
+                    <p>С любовью,</p>
+                    <p class="your-name">Твоя Сашенька ❤️</p>
+                </div>
+            </div>
+
+            <a href="{{ url_for('index') }}" class="btn">Начать заново</a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // Создаем фейерверки и звездочки
+        function createFireworks() {
+            const container = document.getElementById('fireworks-container');
+            const types = ['firework', 'star', 'sparkle'];
+            const colors = ['#ff66a3', '#ff3385', '#ff8ab3', '#ffb6d9', '#ffffff', '#fff8dc'];
+
+            // Создаем много анимаций
+            for (let i = 0; i < 40; i++) {
+                const element = document.createElement('div');
+                const type = types[Math.floor(Math.random() * types.length)];
+                element.className = type;
+
+                if (type === 'firework') {
+                    element.style.left = Math.random() * 100 + 'vw';
+                    element.style.top = Math.random() * 100 + 'vh';
+                    element.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    element.style.width = element.style.height = (Math.random() * 10 + 5) + 'px';
+                } else if (type === 'star') {
+                    element.innerHTML = '★';
+                    element.style.left = Math.random() * 100 + 'vw';
+                    element.style.top = Math.random() * 100 + 'vh';
+                    element.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    element.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    element.style.opacity = Math.random() * 0.8 + 0.2;
+                } else if (type === 'sparkle') {
+                    element.innerHTML = '✦';
+                    element.style.left = Math.random() * 100 + 'vw';
+                    element.style.top = Math.random() * 100 + 'vh';
+                    element.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    element.style.fontSize = (Math.random() * 15 + 8) + 'px';
+                }
+
+                element.style.animationDelay = Math.random() * 2 + 's';
+                element.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                container.appendChild(element);
+            }
+        }
+
+        // Функция для остановки анимаций через 5 секунд
+        function stopAnimations() {
+            setTimeout(() => {
+                const animations = document.querySelectorAll('#fireworks-container > div');
+                animations.forEach(el => {
+                    el.style.animationPlayState = 'paused';
+                    el.style.opacity = '0.2';
+                    el.style.transition = 'opacity 2s ease';
+                });
+            }, 5000); // 5 секунд
+        }
+
+        // Управление слайд-шоу
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(n) {
+            if (n >= slides.length) currentSlide = 0;
+            if (n < 0) currentSlide = slides.length - 1;
+
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide].classList.add('active');
+        }
+
+        window.nextSlide = function() {
+            showSlide(++currentSlide);
+        };
+
+        window.prevSlide = function() {
+            showSlide(--currentSlide);
+        };
+
+        // Автоматическое переключение слайдов
+        let slideInterval = setInterval(nextSlide, 4000);
+
+        // Останавливаем автоматическое переключение при наведении
+        document.querySelector('.slideshow-container').addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+
+        document.querySelector('.slideshow-container').addEventListener('mouseleave', () => {
+            slideInterval = setInterval(nextSlide, 4000);
+        });
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            createFireworks();
+            stopAnimations();
+            showSlide(0);
+        });
+    </script>
+</body>
+</html>

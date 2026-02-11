@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Найди ключи к нашему счастью</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="start-screen">
+    <div class="container">
+
+        <h1>Найди ключи к нашему счастью</h1>
+        <p class="intro-text">Марик, чтобы увидеть нашу историю, тебе нужно вспомнить немного наших важных моментов. Каждый правильный ответ откроет часть нашего альбома 💝</p>
+
+        <div class="heart-animation">💖</div>
+
+        <a href="{{ url_for('level', level=1) }}" class="btn">Начать путешествие</a>
+
+        <p class="hint">Подсказка: будь внимателен к деталям, они очень важны</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // Анимация сердечек на главной
+        document.querySelectorAll('.heart').forEach((heart, index) => {
+            heart.style.animationDelay = (index * 0.5) + 's';
+        });
+    </script>
+</body>
+</html>

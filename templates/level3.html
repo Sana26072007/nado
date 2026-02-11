@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Уровень 3 - Самый дорогой подарок</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="level-screen">
+    <div class="container">
+        <h2>Уровень 3: Самый дорогой подарок</h2>
+        <p class="question">Мой самый любимый подарок от тебя?</p>
+
+        <div class="options options-same-color">
+            <button class="option-btn" data-answer="румбокс">Румбокс</button>
+            <button class="option-btn" data-answer="гусь">Гусь</button>
+            <button class="option-btn" data-answer="улыбашка">Счастливый</button>
+            <button class="option-btn" data-answer="светильник курапика">Светильник Курапика</button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <div id="success-content" style="display:none;">
+            <div class="heart-animation">💝</div>
+            <p class="success-message">Да! Именно этот!</p>
+
+            <div class="image-box">
+    <img src="{{ url_for('static', filename='image/smiley_toy.jpg') }}" alt="Улыбашка" class="fill-max-size">
+</div>
+
+            <p class="caption">Этот подарок был спонтанным, поэтому очень искренним, он до сих пор греет душу.</p>
+
+            <div class="memory-box">
+                <p>Ты помнишь, как ты дарил его? Было очень мило</p>
+            </div>
+
+            <a href="{{ url_for('final') }}" class="btn">Посмотреть нашу историю целиком</a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        document.querySelectorAll('.option-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const answer = this.getAttribute('data-answer');
+                const feedback = document.getElementById('feedback');
+                const successContent = document.getElementById('success-content');
+                
+                // Проверяем правильность ответа
+                const isCorrect = answer === 'улыбашка';
+
+                if (isCorrect) {
+                    // Визуально выделяем правильный ответ
+                    this.classList.add('correct');
+                    
+                    // Отправляем правильный ответ
+                    fetch('/level/3', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'answer=' + encodeURIComponent(answer)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.correct) {
+                            feedback.innerHTML = '<p class="correct-feedback">Точно! Ты помнишь!</p>';
+                            setTimeout(() => {
+                                successContent.style.display = 'block';
+                                successContent.style.animation = 'fadeIn 1s ease';
+                            }, 800);
+                        }
+                    });
+                } else {
+                    feedback.innerHTML = '<p class="wrong-feedback">Ты же знаешь правильный ответ... Вспомни!</p>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
