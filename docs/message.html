@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Секретное сообщение</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="message-screen">
+    <div class="container">
+        <div class="envelope-animation">💌</div>
+
+        <h1>Секретное сообщение</h1>
+        <p class="message-instruction">Напиши мне что-нибудь, что я найду и прочитаю позже</p>
+
+        <form id="message-form" class="message-form">
+            <div class="form-group">
+                <label for="secret-message">Твое сообщение:</label>
+                <textarea id="secret-message" name="message" placeholder="Напиши здесь всё, что хочешь сказать..." minlength="5" required></textarea>
+                <div class="char-count">Символов: <span id="char-counter">0</span></div>
+            </div>
+
+            <div class="form-options-grid">
+                <button type="submit" class="btn btn-submit">Отправить сообщение</button>
+                <a href="final.html" class="btn btn-return">Вернуться назад</a>
+            </div>
+        </form>
+
+        <div id="message-feedback" class="feedback"></div>
+
+        <div class="romantic-quote">
+            <p>люблю тебя очень сильно</p>
+        </div>
+
+        <div class="hearts-small">
+            <span>❤️</span>
+            <span>💖</span>
+            <span>💕</span>
+            <span>💗</span>
+            <span>💓</span>
+        </div>
+    </div>
+
+    <script src="static/js/script.js"></script>
+    <script>
+        // Счетчик символов
+        const textarea = document.getElementById('secret-message');
+        const charCounter = document.getElementById('char-counter');
+
+        textarea.addEventListener('input', function() {
+            charCounter.textContent = this.value.length;
+
+            // Меняем цвет счетчика
+            if (this.value.length < 10) {
+                charCounter.style.color = '#ff6666';
+            } else if (this.value.length < 30) {
+                charCounter.style.color = '#ff9966';
+            } else {
+                charCounter.style.color = '#66cc66';
+            }
+        });
+
+        // Отправка формы
+        document.getElementById('message-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const message = textarea.value.trim();
+            const feedback = document.getElementById('message-feedback');
+
+            if (message.length < 5) {
+                feedback.innerHTML = '<p class="wrong-feedback">Сообщение должно содержать хотя бы 5 символов</p>';
+                return;
+            }
+
+            // Показываем анимацию загрузки
+            feedback.innerHTML = '<p class="loading">Отправляем...</p>';
+
+            // Отправляем на сервер
+            // Сохранение в localStorage (удален серверный вызов)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    feedback.innerHTML = '<p class="correct-feedback">Сообщение сохранено! Я найду его и прочитаю с улыбкой. Спасибо!</p>';
+                    textarea.value = '';
+                    charCounter.textContent = '0';
+
+                    // Через 3 секунды предлагаем вернуться
+                    setTimeout(() => {
+                        feedback.innerHTML += '<p><a href="{{ url_for("final") }}" class="btn-small">Вернуться к нашей истории</a></p>';
+                    }, 3000);
+                } else {
+                    feedback.innerHTML = '<p class="wrong-feedback">Что-то пошло не так... Попробуй еще раз</p>';
+                }
+            })
+            .catch(error => {
+                feedback.innerHTML = '<p class="wrong-feedback">Ошибка соединения. Проверь интернет</p>';
+            });
+        });
+
+        // Анимация конверта
+        const envelope = document.querySelector('.envelope-animation');
+        setInterval(() => {
+            envelope.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                envelope.style.transform = 'scale(1)';
+            }, 300);
+        }, 2000);
+    </script>
+<script src="static/js/static_version.js"></script>
+</body>
+</html>

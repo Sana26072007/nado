@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Уровень 3 - Самый дорогой подарок</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body class="level-screen">
     <div class="container">
@@ -24,7 +24,7 @@
             <p class="success-message">Да! Именно этот!</p>
 
             <div class="image-box">
-    <img src="{{ url_for('static', filename='image/smiley_toy.jpg') }}" alt="Улыбашка" class="fill-max-size">
+    <img src="static/image/smiley_toy.jpg" alt="Улыбашка" class="fill-max-size">
 </div>
 
             <p class="caption">Этот подарок был спонтанным, поэтому очень искренним, он до сих пор греет душу.</p>
@@ -33,11 +33,11 @@
                 <p>Ты помнишь, как ты дарил его? Было очень мило</p>
             </div>
 
-            <a href="{{ url_for('final') }}" class="btn">Посмотреть нашу историю целиком</a>
+            <a href="final.html" class="btn">Посмотреть нашу историю целиком</a>
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="static/js/script.js"></script>
     <script>
         document.querySelectorAll('.option-btn').forEach(button => {
             button.addEventListener('click', function() {
@@ -53,12 +53,7 @@
                     this.classList.add('correct');
 
                     // Отправляем правильный ответ
-                    fetch('/level/3', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'answer=' + encodeURIComponent(answer)
+                    // Проверка ответа (удален серверный вызов)
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -76,5 +71,6 @@
             });
         });
     </script>
+<script src="static/js/static_version.js"></script>
 </body>
 </html>

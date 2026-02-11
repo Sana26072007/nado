@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Уровень 1 - Школьные воспоминания</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="level-screen">
+    <div class="container">
+        <h2>Уровень 1: Школьные воспоминания</h2>
+        <p class="question">Мой любимый школьный момент с тобой?</p>
+
+<div class="options options-same-color">
+    <div class="option-with-photo" data-answer="выпускной">
+        <div class="option-photo-container image-box">
+            <img src="static/image/graduation.jpg" alt="Выпускной" class="fill-max-size">
+        </div>
+        <button class="option-btn">Выпускной</button>
+    </div>
+
+    <div class="option-with-photo" data-answer="фотосессия на альбом">
+        <div class="option-photo-container image-box">
+            <img src="static/image/photosession.jpg" alt="Фотосессия" class="fill-max-size">
+        </div>
+        <button class="option-btn">Фотосессия на альбом</button>
+    </div>
+
+    <div class="option-with-photo correct-option" data-answer="новогодний квн">
+        <div class="option-photo-container image-box">
+            <img src="static/image/kvn.jpg" alt="КВН" class="fill-max-size">
+        </div>
+        <button class="option-btn">Новогодний КВН</button>
+    </div>
+
+    <div class="option-with-photo" data-answer="выдача аттестатов">
+        <div class="option-photo-container image-box">
+            <img src="static/image/certificates.jpg" alt="Аттестаты" class="fill-max-size">
+        </div>
+        <button class="option-btn">Выдача аттестатов</button>
+    </div>
+</div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <div id="photo-gallery" style="display:none;">
+            <div class="key-animation">🔑</div>
+            <p class="success-message">Правильно! умничка мой</p>
+
+            <p class="caption">было весело красить тебя :)</p>
+
+            <a href="level2.html" class="btn">Перейти к следующему воспоминанию</a>
+        </div>
+    </div>
+
+    <script src="static/js/script.js"></script>
+    <script>
+        document.querySelectorAll('.option-with-photo').forEach(option => {
+            const button = option.querySelector('.option-btn');
+            button.addEventListener('click', function() {
+                const answer = option.getAttribute('data-answer');
+                const isCorrect = option.classList.contains('correct-option');
+                const feedback = document.getElementById('feedback');
+                const gallery = document.getElementById('photo-gallery');
+
+                if (isCorrect) {
+                    // Отправляем правильный ответ на сервер
+                    // Проверка ответа (удален серверный вызов)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.correct) {
+                            feedback.innerHTML = '<p class="correct-feedback">Правильно! Это было так весело!</p>';
+                            // Показываем галерею с анимацией
+                            setTimeout(() => {
+                                gallery.style.display = 'block';
+                                gallery.style.animation = 'fadeIn 1s ease';
+                            }, 800);
+                        }
+                    });
+                } else {
+                    feedback.innerHTML = '<p class="wrong-feedback">Ну ты чо, неправильно... Попробуй еще раз!</p>';
+                }
+            });
+        });
+    </script>
+<script src="static/js/static_version.js"></script>
+</body>
+</html>

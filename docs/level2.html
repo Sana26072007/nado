@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Уровень 2 - Первое свидание</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="level-screen">
+    <!-- Плавающие сердечки -->
+    <div id="floating-hearts"></div>
+
+    <div class="container">
+        <h2>Уровень 2: Первое свидание</h2>
+        <p class="question">Где мы катались на нашем первом свидании?</p>
+
+        <div class="input-group">
+            <input type="text" id="answer-input" placeholder="Введите место...">
+            <button id="submit-btn" class="btn">Проверить</button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <div id="success-content" style="display:none;">
+            <div class="animation-placeholder">
+                <div class="envelope">✉️</div>
+            </div>
+            <div class="image-box slide-box">
+    <img src="static/image/first_date.jpg" alt="Первое свидание" class="fill-max-size">
+</div>
+            <p class="caption">30.05.2023. Стеснялся меня обнимать, тепло на душе вспоминая это</p>
+            <a href="level3.html" class="btn">Дальше</a>
+        </div>
+    </div>
+
+    <script src="static/js/script.js"></script>
+    <script>
+        // Создаем плавающие сердечки
+        function createFloatingHearts() {
+            const container = document.getElementById('floating-hearts');
+            const hearts = ['❤️', '💖', '💕', '💗', '💓', '💞', '💝'];
+
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.opacity = Math.random() * 0.7 + 0.3;
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        // Обработчик отправки ответа
+        document.getElementById('submit-btn').addEventListener('click', function() {
+            const answer = document.getElementById('answer-input').value.trim().toLowerCase();
+            const feedback = document.getElementById('feedback');
+
+            if (!answer) {
+                feedback.innerHTML = '<p class="wrong-feedback">Введите ответ!</p>';
+                return;
+            }
+
+            // Проверка ответа (удален серверный вызов)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.correct) {
+                    feedback.innerHTML = '<p class="correct-feedback">Правильно! Помню этот день!</p>';
+                    setTimeout(() => {
+                        document.getElementById('success-content').style.display = 'block';
+                        document.getElementById('success-content').style.animation = 'fadeIn 1s ease';
+                    }, 800);
+                } else {
+                    feedback.innerHTML = '<p class="wrong-feedback">Подсказка: высоко и вид на воду</p>';
+                }
+            });
+        });
+
+        // Создаем сердечки при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingHearts();
+
+            // Позволяем отправлять ответ по Enter
+            document.getElementById('answer-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('submit-btn').click();
+                }
+            });
+        });
+    </script>
+<script src="static/js/static_version.js"></script>
+</body>
+</html>
