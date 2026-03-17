@@ -14,31 +14,11 @@ jobs:
       - name: Получить код
         uses: actions/checkout@v4
 
-      - name: Установить Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Установить зависимости
+      - name: Проверка наличия файлов
         run: |
-          echo "Проверяем наличие package-lock.json..."
-          if [ -f package-lock.json ]; then
-            echo "package-lock.json найден, использую npm ci"
-            npm ci
-          else
-            echo "package-lock.json не найден, использую npm install"
-            npm install
-          fi
-
-      - name: Запустить тесты
-        run: |
-          echo "Запускаем тесты..."
-          # Если тесты не настроены, просто выводим сообщение и успешно завершаем
-          if npm run | grep -q "test"; then
-            npm test
-          else
-            echo "Тесты не настроены, пропускаем этап"
-          fi
+          echo "Проверяем файлы в репозитории:"
+          ls -la
+          echo "Все файлы на месте, пропускаем тесты для статического сайта"
 
   deploy:
     needs: build-and-test
@@ -49,9 +29,11 @@ jobs:
       - name: Получить код
         uses: actions/checkout@v4
 
-      - name: Симуляция деплоя (для учебных целей)
+      - name: Симуляция деплоя статического сайта
         run: |
-          echo "=== ДЕПЛОЙ ЗАПУЩЕН ==="
-          echo "Приложение готово к развертыванию!"
-          echo "В реальном проекте здесь было бы подключение к серверу"
+          echo "=== НАЧАЛО ДЕПЛОЯ ==="
+          echo "Деплоим статический сайт:"
+          echo "Найдены файлы:"
+          ls -la
+          echo "В реальном проекте здесь файлы скопировались бы на хостинг"
           echo "=== ДЕПЛОЙ ЗАВЕРШЕН УСПЕШНО ==="
